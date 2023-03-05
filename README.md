@@ -2,7 +2,7 @@
 
 Climate change is a pressing issue around the globe that has differential impacts on individuals based on where they live and their financial status. In this assignment, you will build an interactive Shiny application exploring CO2 emissions data compiled by Our World In Data. You will need to create all of the necessary files for your work (e.g., `app.R`, `ui.R`, `server.R`).
 
-Shiny App: [LINK TO YOUR SHINY APP HERE]
+Shiny App: <https://github.com/info-201a-wi23/a4-climate-change-AdityaKhowalGithub>
 
 ## Data
 
