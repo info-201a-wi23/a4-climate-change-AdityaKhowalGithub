@@ -2,7 +2,9 @@
 
 In this small project, I will analyze the features of CO2 emissions and consumption-based CO2 emissions by region and year. I believe that it is important to see the trends of not just CO2 emissions by region but also consumption based CO2 as that is a more tangible statistic. Going beyond the extent of my project, by tracking "consumption emissions", researchers can, to some extent, find and target consumption activities that can be more sustainable. This is a perspective that should be considered for both the environmental and human welfare application, as it is important if I are to build a future that is both sustainable and provides high standards of living for everyone.
 
-The data set I am analyzing is the [OWID CO2 data](https://github.com/owid/co2-data), which contains annual CO2 emissions data for countries and regions from 1751 to 2021. For this project, I am choosing to target the period from 1990 - 2021 as this is more relevant to our consumption and co2 practices now.
+The data set I am analyzing is the [OWID CO2 data](https://github.com/owid/co2-data), which contains annual CO2 emissions data for countries and regions from 1751 to 2021. For this project, I am choosing to target the period from 2010 - 2021 as this is more relevant to our consumption and co2 practices now.
+
+This 11 year period also allows me to host on shinyapps.io as other wise I would run out of memory. I originally ran this app to see trends over 30 years so I will draw insights from that as well.
 
 The data was collected by Our World in Data (OWID) and is based on multiple sources including:
 
