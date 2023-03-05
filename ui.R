@@ -41,7 +41,9 @@ ui <- navbarPage(
       sliderInput("yearCalc", "Year:", min = 1990, max = 2021, value = 2020, sep = ""),
       #tableOutput("summaryInfo")
       #"For the year selected: ", year, "the average co2 for all the countries was ", avg_co2, " million tons"
-      textOutput("summaryInfo")
+      uiOutput("summaryInfo"),
+      includeMarkdown("conclusion.md")
+      
     )
   ),
   
@@ -57,7 +59,8 @@ ui <- navbarPage(
       mainPanel(
         plotlyOutput("map", width = "100%", height = "800px"),
         p("The above plot shows the global CO2 emissions by country. You can adjust the year and CO2 type using the widgets on the left."),
-        p("Based on the plot, it can be observed that ")
+        p("Based on the plot, it can be observed that throughout the duration of 1990 - 2021  that the US and most of asia emmits the most a
+          amount of CO2. There is also a positive correlation between consumption based CO2 and normal CO2 emissions")
       )
     )
   ),

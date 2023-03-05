@@ -20,10 +20,6 @@ The data was collected to provide a comprehensive view of global CO2 emissions o
 
 One possible limitation of this data is that it only includes CO2 emissions and does not account for other greenhouse gases. Additionally, there are a lot of null values where data was not documented or lost, this provides holes out our map. For example it is hard to show years before 1960 or even some countries in 2021, as there is no data or not enough data to analyze.
 
-Then, you will share at least **5 relevant values** of interest. These will likely be calculated using your DPLYR skills, answering questions such as*:*
+Another huge problem is the naming conventions of countries in DF. Country names such as "world", "Non-OECD", "OECD", "GCP", and more threw my calculations off. I accounted for these extrenious names when I could but this means that there are slight differences in my map to my calculated summary data below. For example Europe(gcp) doesnt exist on the world map polygon file, so it is unable to be displayed on the map.
 
--   *What is the average value of my variable across all the countries?*
-
--   *Where is my variable the highest / lowest?*
-
--   *How much has my variable change over the last N years?*
+**Calculated Values by selected year:**

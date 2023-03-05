@@ -71,14 +71,16 @@ server <- function(input, output) {
   avg_co2_byYear <- reactive({
     summary_table %>%
       filter(year == input$yearCalc) %>%
-      select(avg_co2, max_co2, min_co2)
+      select(avg_co2, max_co2, min_co2, avg_consumption_co2)
   })
-  max_co2_byYear <- reactive({
+  
+co2_byYear <- reactive({
     df %>%
       filter(year == input$yearCalc) %>%
-      filter(co2 == max(co2)) %>%
-      pull(country)
+      select(co2, country)
   })
+
+
 
     
 a <- summary_table %>%
@@ -93,12 +95,28 @@ change <- round((b-a),2)
 
 
   
-  output$summaryInfo <- renderText({
+  output$summaryInfo <- renderUI({
+    
+    max_co2 <- co2_byYear() %>%
+      filter(country != "World" & country != "Non-OECD (GCP)" & country != "High-income countries") %>%
+      filter(co2 == max(co2, na.rm = T)) %>%
+      pull(country)
+    
+    min_co2 <- co2_byYear() %>%
+      filter(co2 == min(co2, na.rm = T)) %>%
+      pull(country) %>%
+      first()
+
     avg_co2_round <- round(avg_co2_byYear()$avg_co2 , 2)
+    
+    avg_consumption <- round(avg_co2_byYear()$avg_consumption_co2 , 2)
+    
     year <- input$yearCalc
-    paste0("For the year selected, ", year, ", the average CO2 is: ", avg_co2_round, 
-           "\n The country with max co2 in the year ", year, " is ", max_co2_byYear()
-           ,"The amount of CO2 emmissions has changed by ", change , " from 1990 to 2021")
+    HTML(paste0("For the year selected, <u>", year, "</u>, the average CO2 is: <b>", avg_co2_round, "</b> and ",
+                "The average Consumption based CO2 is <b>", avg_consumption,
+                "</b> <br> The country with max co2 in the year <u>", year, "</u> is <b>", max_co2,
+                "</b> <br> The country with least co2 in the year <u>", year, "</u> is <b>", min_co2,
+                "</b> <br> The amount of CO2 emissions has changed by <b>", change, "</b> from <u>1990 to 2021.</u>"))
   })
   
   
@@ -108,14 +126,16 @@ change <- round((b-a),2)
     
     df_map_unique <- df_map %>%
       filter(year == input$year) 
-    
+
     if(input$co2Selection == "co2"){
       fill_type <- df_map_unique$co2
       title_type <- "Emissions of Carbon Dioxide by Region"
+      hover_text <- paste0(round(df_map_unique$co2, 2), " million tons")
       yearVar <- input$year
     }else{
       fill_type <- df_map_unique$consumption_co2
       title_type <- "Consumption based emissions of carbon dioxide by Region"
+      hover_text <- paste0(round(df_map_unique$consumption_co2, 2), " million tons")
       yearVar <- input$year
     }
     
@@ -123,13 +143,13 @@ change <- round((b-a),2)
 
     p <- ggplot(df_map_unique) +
       geom_polygon(aes(x = long, y = lat, group = group,
-                       fill = fill_type)) +
-      scale_fill_gradientn(colors = plot_colors) +
-      labs(title = title_type, subtitle = paste0("measured in million tonnes \nYear ", input$year)) +
+                       fill = fill_type, text = hover_text)) +
+      scale_fill_gradientn(colors = plot_colors, labels = waiver()) +
+      labs(title = title_type, subtitle = paste0("measured in million tonnes \nYear ", input$year),  fill = "Million Tons of CO2") +
       theme(axis.text = element_text(size = 12), axis.title = element_text(size = 14))
     
     return(
-      ggplotly(p)%>%
+      ggplotly(p, tooltip="text")%>%
         layout(title = list(text = paste0(title_type,
                                           '<br>',
                                           '<sup>',
