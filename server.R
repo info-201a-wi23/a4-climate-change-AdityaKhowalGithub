@@ -48,21 +48,59 @@ server <- function(input, output) {
     group_by(country) %>%
     select(country, co2, consumption_co2, year) %>%
     mutate(country = ifelse(country == "United States", "USA", country))
+  # Create a summary table
+  summary_table <- df %>%
+    filter(year> 1989) %>%
+    group_by(year) %>%
+    summarize(avg_co2 = mean(co2, na.rm = TRUE),
+              max_co2 = max(co2, na.rm = TRUE),
+              min_co2 = min(co2, na.rm = TRUE),
+              avg_consumption_co2 = mean(consumption_co2, na.rm = TRUE),
+              max_consumption_co2 = max(consumption_co2, na.rm = TRUE),
+              min_consumption_co2 = min(consumption_co2, na.rm = TRUE))
 
+
+#  avg_co2_byYear <- summary_table %>%
+#    filter(year == input$yearCalc) %>%
+#    select(avg_co2)
   # Render the summary table
   output$summary_table <- renderTable({
-    # Create a summary table
-    summary_table <- df %>%
-      filter(year> 1990) %>%
-      group_by(year) %>%
-      summarize(avg_co2 = mean(co2, na.rm = TRUE),
-                max_co2 = max(co2, na.rm = TRUE),
-                min_co2 = min(co2, na.rm = TRUE),
-                avg_consumption_co2 = mean(consumption_co2, na.rm = TRUE),
-                max_consumption_co2 = max(consumption_co2, na.rm = TRUE),
-                min_consumption_co2 = min(consumption_co2, na.rm = TRUE))
     return(summary_table)
   })
+  
+  avg_co2_byYear <- reactive({
+    summary_table %>%
+      filter(year == input$yearCalc) %>%
+      select(avg_co2, max_co2, min_co2)
+  })
+  max_co2_byYear <- reactive({
+    df %>%
+      filter(year == input$yearCalc) %>%
+      filter(co2 == max(co2)) %>%
+      pull(country)
+  })
+
+    
+a <- summary_table %>%
+    filter(year == 1990) %>%
+    pull(avg_co2)
+b <- summary_table %>%
+  filter(year == 2021) %>%
+  pull(avg_co2)
+  
+change <- round((b-a),2)
+
+
+
+  
+  output$summaryInfo <- renderText({
+    avg_co2_round <- round(avg_co2_byYear()$avg_co2 , 2)
+    year <- input$yearCalc
+    paste0("For the year selected, ", year, ", the average CO2 is: ", avg_co2_round, 
+           "\n The country with max co2 in the year ", year, " is ", max_co2_byYear()
+           ,"The amount of CO2 emmissions has changed by ", change , " from 1990 to 2021")
+  })
+  
   
   output$map <- renderPlotly({
     # Join aggregated world_shape with subset_df

@@ -38,7 +38,10 @@ ui <- navbarPage(
     "Introduction",
     fluidPage(
       intro_text,
-      tableOutput("summary_table")
+      sliderInput("yearCalc", "Year:", min = 1990, max = 2021, value = 2020, sep = ""),
+      #tableOutput("summaryInfo")
+      #"For the year selected: ", year, "the average co2 for all the countries was ", avg_co2, " million tons"
+      textOutput("summaryInfo")
     )
   ),
   
@@ -47,20 +50,22 @@ ui <- navbarPage(
     "Data Visualization",
     sidebarLayout(
       sidebarPanel(
-        sliderInput("year", "Year:", min = 1990, max = 2021, value = 2020),
+        sliderInput("year", "Year:", min = 1990, max = 2021, value = 2020, sep = ""),
         radioButtons(inputId = "co2Selection", label = "Select CO2 type", 
                      choices = c("CO2 Emissions" = "co2", "Consumption-based CO2 Emissions" = "consumption_co2"))
       ), 
       mainPanel(
-        fluidRow(
-          column(3,
-                 p("The above plot shows the global CO2 emissions by country. You can adjust the year and CO2 type using the widgets on the left.")
-          ),
-          column(9,
-                 plotlyOutput("map", width = "100%", height = "800px")
-          )
-        )
+        plotlyOutput("map", width = "100%", height = "800px"),
+        p("The above plot shows the global CO2 emissions by country. You can adjust the year and CO2 type using the widgets on the left."),
+        p("Based on the plot, it can be observed that ")
       )
+    )
+  ),
+  tabPanel(
+    "Summary Data",
+    fluidPage(
+        p("Here lies a summerized table of values that shows some relevant information from our data. ps. This is very summerized as the averages are computed for entire regions!"),
+      tableOutput("summary_table")
     )
   )
 )
