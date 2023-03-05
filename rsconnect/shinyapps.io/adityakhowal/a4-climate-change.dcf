@@ -5,9 +5,9 @@ account: adityakhowal
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 8480217
-bundleId: 6918539
+bundleId: 6918565
 url: https://adityakhowal.shinyapps.io/a4-climate-change/
-when: 1678050028.01262
-lastSyncTime: 1678050028.01265
+when: 1678050934.98349
+lastSyncTime: 1678050934.9835
 asMultiple: FALSE
 asStatic: FALSE
